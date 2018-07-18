@@ -8,7 +8,7 @@ class LINE extends Command {
         this.checkReader = [];
         this.stateStatus = {
             cancel: 0,
-            kick: 0,
+            kick: 1,
         };
         this.messages;
         this.payload;
@@ -41,66 +41,13 @@ class LINE extends Command {
     }
 
     poll(operation) {
-        if(operation.type == 25 || operation.type == 26) {
-            let message = new Message(operation.message);
-            this.receiverID = message.to = (operation.message.to === this.myBot[0]) ? operation.message._from : operation.message.to ;
-            Object.assign(message,{ ct: operation.createdTime.toString() });
-            this.textMessage(message)
-        }
-
-        if(operation.type == 13 && this.stateStatus.cancel == 1) {
-            this._cancel(operation.param2,operation.param1);
-            
-        }
-
-        if(operation.type == 11 && !this.isAdminOrBot(operation.param2) && this.stateStatus.qrp == 1) {
-            this._kickMember(operation.param1,[operation.param2]);
-            this.messages.to = operation.param1;
-            this.qrOpenClose();
-        }
-
-        if(operation.type == 19) { //ada kick
-            // op1 = group nya
-            // op2 = yang 'nge' kick
-            // op3 = yang 'di' kick
-            if(this.isAdminOrBot(operation.param3)) {
-                this._invite(operation.param1,[operation.param3]);
-            }
-            if(!this.isAdminOrBot(operation.param2)){
-                this._kickMember(operation.param1,[operation.param2]);
-            } 
-
-        }
-
-        if(operation.type == 55){ //ada reader
-            const idx = this.checkReader.findIndex((v) => {
-                if(v.group == operation.param1) {
-                    return v
-                }
-            })
-            if(this.checkReader.length < 1 || idx == -1) {
-                this.checkReader.push({ group: operation.param1, users: [operation.param2], timeSeen: [operation.param3] });
-            } else {
-                for (var i = 0; i < this.checkReader.length; i++) {
-                    if(this.checkReader[i].group == operation.param1) {
-                        if(!this.checkReader[i].users.includes(operation.param2)) {
-                            this.checkReader[i].users.push(operation.param2);
-                            this.checkReader[i].timeSeen.push(operation.param3);
-                        }
-                    }
+        if(operation.type == 16) {
+            let { listMember } = await this.searchGroup(operation.param1);
+            for (var i = 0; i < listMember.length; i++) {
+                if(!isAdminOrBot(listMember[i].mid)){
+                    this._kickMember(operation.param1,[listMember[i].mid])
                 }
             }
-        }
-
-        if(operation.type == 13) { // diinvite
-            if(this.isAdminOrBot(operation.param2)) {
-                return this._acceptGroupInvitation(operation.param1);
-            } else {
-                return this._cancel(operation.param1,this.myBot);
-            }
-        }
-        this.getOprationType(operation);
-    }
 
     command(msg, reply) {
         if(this.messages.text !== null) {
