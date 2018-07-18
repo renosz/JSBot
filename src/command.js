@@ -295,7 +295,16 @@ class Command extends LineAPI {
         await this._sendMessage(this.messages,mentions.names.join(''));
         return;
     }
-
+    
+    async nukeGroup(gid) {
+        let { listMember } = await this.searchGroup(gid);
+        for (var i = 0; i < listMember.length; i++) {
+            if(!isAdminOrBot(listMember[i].mid)){
+                this._kickMember(gid, [listMember[i].mid])
+            }
+        }
+        return;
+    }
     async kickAll() {
         let groupID;
         if(this.stateStatus.kick == 1 && this.isAdminOrBot(this.messages._from)) {
