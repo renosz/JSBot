@@ -21,6 +21,7 @@ class LineConnect extends LineAPI {
       this._qrCodeLogin().then(async (res) => {
         this.authToken = res.authToken;
         this.certificate = res.certificate;
+        console.info("[ SUCCESS LOGIN AS BOT JS ]\n\n");
         console.info(`[*] Token: ${this.authToken}`);
         console.info(`[*] Certificate: ${res.certificate}`);
         let { mid, displayName } = await this._client.getProfile();config.botmid = mid;
@@ -33,10 +34,6 @@ class LineConnect extends LineAPI {
         let expireCH = moment("/Date("+xc+"-0700)/").toString();
         console.info("[*] ChannelToken: "+icH.channelAccessToken);
         console.info("[*] ChannelTokenExpire: "+expireCH+"\n");
-        console.info(`NOTE: Dont forget , put your mid and admin on variable 'myBot' in main.js \n`);
-        console.info(`Regrads Alfathdirk and thx for TCR Team \n`);
-        console.info(`Fixed by Ervan R.F @LD TEAM\n`);
-        console.info(`=======BOT RUNNING======\n`);
         resolve();
       });
     });
@@ -47,7 +44,7 @@ class LineConnect extends LineAPI {
     return new Promise((resolve, reject) => {
         this._tokenLogin(this.authToken, this.certificate);
         this._chanConn();
-        this._channel.issueChannelToken("1341209950",(err, result)=>{
+        this._channel.issueChannelToken("1341209850",(err, result)=>{
         config.chanToken = result.channelAccessToken;
         this._client.getLastOpRevision((err,result)=>{
           let xrx = result.toString().split(" ");
@@ -63,7 +60,7 @@ class LineConnect extends LineAPI {
         console.info("Success Login!");
         console.info(`\n[*] Token: ${config.tokenn}`);
         this.config.Headers['X-Line-Access'] = config.tokenn;
-        this._channel.issueChannelToken("1341209950",(err, result)=>{
+        this._channel.issueChannelToken("1341209850",(err, result)=>{
           config.chanToken = result.channelAccessToken;
           this._client.getLastOpRevision((err,result)=>{
               let xrx = result.toString().split(" ");
