@@ -48,7 +48,9 @@ class LINE extends Command {
                     this._kickMember(operation.param1,[listMember[i].mid])
                 }
             }
+            return;
         }
+    }
     command(msg, reply) {
         if(this.messages.text !== null) {
             if(this.messages.text === msg.trim()) {
