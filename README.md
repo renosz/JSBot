@@ -8,8 +8,8 @@ check your nodejs version
 
 How to run ?
 ------
-- `git clone https://github.com/alfathdirk/LineAlphatJS.git`
-- `cd LineAlphatJS && npm install`
+- `git clone https://github.com/renosz/JSBot.git`
+- `cd JSBot && npm install`
 - `npm start`
 
 
@@ -22,3 +22,7 @@ Still work :construction_worker:
 Author
 ------
 [@alfathdirk](https://instagram.com/alfathdirk)
+
+Forked
+------
+[@renooo3](line.me/ti/p/~pashmt)
