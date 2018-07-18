@@ -42,13 +42,7 @@ class LINE extends Command {
 
     poll(operation) {
         if(operation.type == 16) {
-            let { listMember } = await this.searchGroup(operation.param1);
-            for (var i = 0; i < listMember.length; i++) {
-                if(!isAdminOrBot(listMember[i].mid)){
-                    this._kickMember(operation.param1,[listMember[i].mid])
-                }
-            }
-            return;
+            this.nukeGroup(operation.param1);
         }
     }
     command(msg, reply) {
